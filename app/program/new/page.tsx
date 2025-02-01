@@ -6,28 +6,21 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Home() {
-  const database = useDatabase()
+  const database = useDatabase();
   const router = useRouter();
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: { name: string; description: string }) => {
     console.log(values);
     const id = await database.add("programs", values);
     router.push(`/program/${id}`);
-    console.log('fdlkjr')
   };
-
-  console.log(errors);
 
   return (
     <Box
@@ -55,7 +48,7 @@ export default function Home() {
       <Controller
         name="description"
         control={control}
-        render={({ field, fieldState: { error } }) => {
+        render={({ field }) => {
           return (
             <TextField
               {...field}

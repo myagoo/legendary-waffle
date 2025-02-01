@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  useDatabase
-} from "@/app/_components/DataBaseProvider";
+import { useDatabase } from "@/app/_components/DataBaseProvider";
 import { Box, Button, TextField } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -12,14 +10,17 @@ export default function Home() {
   const { programId } = useParams<{ programId: string }>();
   console.log("params", programId);
   const router = useRouter();
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control } = useForm<{
+    name: string;
+    description: string;
+  }>({
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: { name: string; description: string }) => {
     console.log("values, ", values);
     const sessionId = await database.add("sessions", { ...values, programId });
     router.push(`/program/${programId}/session/${sessionId}`);

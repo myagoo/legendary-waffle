@@ -26,7 +26,7 @@ export const DataBaseProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const initDB = async () => {
       const database = await openDB("fitnote", 1, {
-        async upgrade(database, oldVersion, newVersion, transaction, event) {
+        async upgrade(database) {
           await database.createObjectStore("programs", {
             autoIncrement: true,
             keyPath: "id",
